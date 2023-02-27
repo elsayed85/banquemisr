@@ -1,25 +1,25 @@
 # QNB Payment Integration Package
 
-QNB Payment Integration Package is a Package for Integrated Payment via QNB Bank.
+banquemisr Payment Integration Package is a Package for Integrated Payment via banquemisr Bank.
 
 # Install
 
 To install Package use composer
 
 ```php
-  composer require payments/qnb-payment:dev-master
+  composer require elsayed85/banquemisr:dev-master
 ```
 
 # Add service provider & alias
 
 Add the following service provider to the array in: ``` config/app.php ```
   ```php
-  Payments\QNBPayment\Providers\QNBPaymentProvider::class
+  Elsayed85\Banquemisr\BanquemisrServiceProvider::class
   ```
   
 Add the following alias to the array in: ``` config/app.php```
   ```php
-  'QNBPayment' => Payments\QNBPayment\Providers\Facades\QNBPayment::class
+  'Banquemisr' =>Elsayed85\Banquemisr\Facades\Banquemisr::class
   ```
   
 # Publish the config file
@@ -34,41 +34,41 @@ Add the following alias to the array in: ``` config/app.php```
 ```php
 
 	// Create Session for Payment SandBox Mode
-	QNBPayment::createSessionSandBox();
+	Banquemisr::createSessionSandBox();
 
 	// Create Session for Payment Live Mode
-	QNBPayment::createSessionLive();
+	Banquemisr::createSessionLive();
 
 	// Start Payment via MasterCard or Visa in SandBox Mode
-	QNBPayment::createPaymentSandBox();
+	Banquemisr::createPaymentSandBox();
 
 	// Start Payment via MasterCard or Visa in Live Mode
-	QNBPayment::createPaymentLive();
+	Banquemisr::createPaymentLive();
 
 	// Get Order Details in SandBox Mode
-	QNBPayment::getOrderDetailsSandBox();
+	Banquemisr::getOrderDetailsSandBox();
 
 	// Get Order Details in Live Mode
-	QNBPayment::getOrderDetailsLive();
+	Banquemisr::getOrderDetailsLive();
 
 	// Start Payment via Meeza Digital in SandBox Mode
-	QNBPayment::createPaymentMeezaSandBox();
+	Banquemisr::createPaymentMeezaSandBox();
 
 	// Start Payment via Meeza Digital in Live Mode
-	QNBPayment::createPaymentMeezaLive();
+	Banquemisr::createPaymentMeezaLive();
 ```
 
 ## Example of Payment Method via Master Card or Visa in SandBox Mode
 ```php
 
 	// Create Session for Payment
-	$sessionID = QNBPayment::createSessionSandBox('125550', 'TESTQNBAATEST001', '9c6a123857f1ea50830fa023ad8c8d1b');
+	$sessionID = Banquemisr::createSessionSandBox('125550', 'TESTQNBAATEST001', '9c6a123857f1ea50830fa023ad8c8d1b');
 
 	// Start Payment via MasterCard or Visa
-	{!! QNBPayment::createPaymentSandBox('success.php', 'fail.php', 'TESTQNBAATEST001', '125550', 20.00, $sessionID, 'Test QNB', 'Cairo', 'ahmedtaherinfo0@gmail.com', 0123456789, 'https://yourdomian.com/images/logo.png') !!}
+	{!! Banquemisr::createPaymentSandBox('success.php', 'fail.php', 'TESTQNBAATEST001', '125550', 20.00, $sessionID, 'Test QNB', 'Cairo', 'ahmedtaherinfo0@gmail.com', 0123456789, 'https://yourdomian.com/images/logo.png') !!}
 
 	// Get Order Details
-	dd(QNBPayment::getOrderDetailsSandBox('125550', 'TESTQNBAATEST001', '9c6a123857f1ea50830fa023ad8c8d1b'));
+	dd(Banquemisr::getOrderDetailsSandBox('125550', 'TESTQNBAATEST001', '9c6a123857f1ea50830fa023ad8c8d1b'));
 
 
 ```

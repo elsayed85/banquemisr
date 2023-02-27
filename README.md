@@ -1,84 +1,136 @@
-# This is my package banquemisr
+# QNB Payment Integration Package
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/elsayed85/banquemisr.svg?style=flat-square)](https://packagist.org/packages/elsayed85/banquemisr)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/elsayed85/banquemisr/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/elsayed85/banquemisr/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/elsayed85/banquemisr/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/elsayed85/banquemisr/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/elsayed85/banquemisr.svg?style=flat-square)](https://packagist.org/packages/elsayed85/banquemisr)
+QNB Payment Integration Package is a Package for Integrated Payment via QNB Bank.
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+# Install
 
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/banquemisr.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/banquemisr)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
-
-## Installation
-
-You can install the package via composer:
-
-```bash
-composer require elsayed85/banquemisr
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="banquemisr-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="banquemisr-config"
-```
-
-This is the contents of the published config file:
+To install Package use composer
 
 ```php
-return [
-];
+  composer require payments/qnb-payment:dev-master
 ```
 
-Optionally, you can publish the views using
+# Add service provider & alias
 
-```bash
-php artisan vendor:publish --tag="banquemisr-views"
-```
+Add the following service provider to the array in: ``` config/app.php ```
+  ```php
+  Payments\QNBPayment\Providers\QNBPaymentProvider::class
+  ```
+  
+Add the following alias to the array in: ``` config/app.php```
+  ```php
+  'QNBPayment' => Payments\QNBPayment\Providers\Facades\QNBPayment::class
+  ```
+  
+# Publish the config file
+
+  ```php
+  php artisan vendor:publish
+  ```
+  config file have name ``` BankPayment.php ``` it return an array of payment options like ``` apiOperation, currency, ApiUrl ```
 
 ## Usage
 
 ```php
-$banquemisr = new Elsayed85\Banquemisr();
-echo $banquemisr->echoPhrase('Hello, Elsayed85!');
+
+	// Create Session for Payment SandBox Mode
+	QNBPayment::createSessionSandBox();
+
+	// Create Session for Payment Live Mode
+	QNBPayment::createSessionLive();
+
+	// Start Payment via MasterCard or Visa in SandBox Mode
+	QNBPayment::createPaymentSandBox();
+
+	// Start Payment via MasterCard or Visa in Live Mode
+	QNBPayment::createPaymentLive();
+
+	// Get Order Details in SandBox Mode
+	QNBPayment::getOrderDetailsSandBox();
+
+	// Get Order Details in Live Mode
+	QNBPayment::getOrderDetailsLive();
+
+	// Start Payment via Meeza Digital in SandBox Mode
+	QNBPayment::createPaymentMeezaSandBox();
+
+	// Start Payment via Meeza Digital in Live Mode
+	QNBPayment::createPaymentMeezaLive();
 ```
 
-## Testing
+## Example of Payment Method via Master Card or Visa in SandBox Mode
+```php
 
-```bash
-composer test
+	// Create Session for Payment
+	$sessionID = QNBPayment::createSessionSandBox('125550', 'TESTQNBAATEST001', '9c6a123857f1ea50830fa023ad8c8d1b');
+
+	// Start Payment via MasterCard or Visa
+	{!! QNBPayment::createPaymentSandBox('success.php', 'fail.php', 'TESTQNBAATEST001', '125550', 20.00, $sessionID, 'Test QNB', 'Cairo', 'ahmedtaherinfo0@gmail.com', 0123456789, 'https://yourdomian.com/images/logo.png') !!}
+
+	// Get Order Details
+	dd(QNBPayment::getOrderDetailsSandBox('125550', 'TESTQNBAATEST001', '9c6a123857f1ea50830fa023ad8c8d1b'));
+
+
 ```
 
-## Changelog
+## Create Session should have contain: 
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+- Your Order ID in your System, Ex: '125550'.
+- Merchant ID  in QNB System, Ex: 'TESTQNBAATEST001'.
+- Merchant Password in QNB System, Ex: '9c6a123857f1ea50830fa023ad8c8d1b'.
+
+## Response of Create Session Method
+- Create and Retrieve Session ID.
+
+## Create Payment Method should have contain: 
+
+- Success URL Upon completion of the Request Success Payment, you will be redirect to this URL.
+- Failer URL Upon completion of the Request Failer Payment, you will be redirect to this URL.
+- Merchant ID  in QNB System, Ex: 'TESTQNBAATEST001'.
+- Your Order ID in your System, Ex: '125550'.
+- The Total Price for Order, Ex: '20.00'.
+- Session ID, your Created in last step can you get it via Create Session Method.
+- Site Name, Ex: 'Test QNB'.
+- Site Address, Ex: 'Cairo', can you set null.
+- Site Email, Ex: 'ahmedtaherinfo0@gmail.com', can you set null.
+- Site Phone, Ex: '0123456789', can you set null.
+- Site Logo URL, Ex: 'https://yourdomian.com/images/logo.png', can you set null.
+
+## Get Order Details should have contain: 
+
+- Your Order ID in your System, Ex: '125550'.
+- Merchant ID  in QNB System, Ex: 'TESTQNBAATEST001'.
+- Merchant Password in QNB System, Ex: '9c6a123857f1ea50830fa023ad8c8d1b'.
+
+## Response of Get Order Details
+- All Information of Payment, Ex: 'Payment Method, Total Price, Card Number, Transaction Date, ...'.
+
+## Example of Payment Method via Meeza Digital in SandBox Mode
+```php
+
+	// Start Payment via Meeza Digital
+	{!! createPaymentMeezaSandBox('success.php', 'fail.php', 10000001117, 100083, 123456, 80) !!}
+
+```
+
+## Create Payment Method should have contain: 
+
+- Success URL Upon completion of the Request Success Payment, you will be redirect to this URL.
+- Failer URL Upon completion of the Request Failer Payment, you will be redirect to this URL.
+- The Configured Merchant ID from UPG, Ex: '10000001117'.
+- The Configured Terminal ID from UPG for the Merchant, Ex: '100083'.
+- Your Order ID in your System, Ex: '123456'.
+- The Total Price for Order, Ex: '80.00'.
+
+## Response of Complete Payment
+- Send information of Payment To Success URL via Ajax Post Data.
+
+## Response of Failer Payment
+- Redirect to Failer URL.
 
 ## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
-
-## Credits
-
-- [Elsayed Kamal](https://github.com/elsayed85)
-- [All Contributors](../../contributors)
+- For major changes, please open an issue first to discuss what you would like to change.
+- Please make sure to update tests as appropriate.
 
 ## License
-
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+[GNU General Public License](http://www.gnu.org/licenses/old-licenses/gpl-1.0.html)

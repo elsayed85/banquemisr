@@ -1,3 +1,11 @@
+misr
+TestMERCHANT_CBA
+405de7461df50083d3ce803c91c5bf05
+
+meeza
+10000001117
+100083
+
 # QNB Payment Integration Package
 
 banquemisr Payment Integration Package is a Package for Integrated Payment via banquemisr Bank.

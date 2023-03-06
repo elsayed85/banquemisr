@@ -1,10 +1,10 @@
-misr
-TestMERCHANT_CBA
-405de7461df50083d3ce803c91c5bf05
+misr<br>
+TestMERCHANT_CBA <br>
+405de7461df50083d3ce803c91c5bf05<br>
 
-meeza
-10000001117
-100083
+meeza<br>
+10000001117<br>
+100083<br>
 
 # QNB Payment Integration Package
 
